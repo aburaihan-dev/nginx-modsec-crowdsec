@@ -1,0 +1,90 @@
+version: '3'
+
+services:
+  #the reverse proxy that will serve the application
+  #you can see nginx's config in ./reverse-proxy/nginx.conf
+  reverse-proxy:
+    build:
+      context: ./reverse-proxy
+      dockerfile: Dockerfile
+    image: nginx-stable-modsec
+    restart: always
+    expose:
+      - 9999
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./web:/usr/share/nginx/html:ro
+      - ./reverse-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./reverse-proxy/default.conf:/etc/nginx/conf.d/default.conf
+      - ./reverse-proxy/metrics.conf:/etc/nginx/conf.d/metrics.conf
+      - logs:/var/log/nginx
+    networks:
+      crowdsec_test:
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter
+    pull_policy: always
+    ports:
+      - "9113:9113"
+    environment:
+      - NGINX_STATUS_URI=http://nginx:9999/metrics
+    depends_on:
+      - reverse-proxy
+    networks:
+      - crowdsec_test
+  
+  #crowdsec : it will be fed nginx's logs
+  #and later we're going to plug a firewall bouncer to it
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    pull_policy: always
+    restart: always
+    environment:
+      #this is the list of collections we want to install
+      #https://hub.crowdsec.net/author/crowdsecurity/collections/nginx
+      COLLECTIONS: "crowdsecurity/nginx"
+      GID: "${GID-1000}"
+    depends_on:
+      - 'reverse-proxy'
+    volumes:
+      - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
+      - logs:/var/log/nginx
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - crowdsec-config:/etc/crowdsec/
+    networks:
+      crowdsec_test:
+  
+  #metabase, because security is cool, but dashboards are cooler
+  dashboard:
+    #we're using a custom Dockerfile so that metabase pops with pre-configured dashboards
+    build: ./crowdsec/dashboard
+    pull_policy: always
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      MB_DB_FILE: /data/metabase.db
+      MGID: "${GID-1000}"
+    depends_on:
+      - 'crowdsec'
+    volumes:
+      - crowdsec-db:/metabase-data/
+    networks:
+      crowdsec_test:
+
+volumes:
+  logs:
+    name: nginx-logs
+  crowdsec-db:
+    name: crowdsec-db
+  crowdsec-config:
+    name: crowdsec-config
+
+networks:
+  crowdsec_test:
+    name: crowdsec_test
+    ipam:
+      driver: default
+      

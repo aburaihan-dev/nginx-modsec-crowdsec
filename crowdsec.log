@@ -1,0 +1,292 @@
+#1 [nginx-crowdsec-dashboard internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 0.0s
+
+#2 [nginx-crowdsec-dashboard internal] load build definition from Dockerfile
+#2 transferring dockerfile: 205B done
+#2 DONE 0.0s
+
+#3 [nginx-stable-modsec internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [nginx-stable-modsec internal] load build definition from Dockerfile
+#4 transferring dockerfile: 2.29kB done
+#4 DONE 0.0s
+
+#5 [auth] library/debian:pull token for registry-1.docker.io
+#5 DONE 0.0s
+
+#6 [nginx-stable-modsec internal] load metadata for docker.io/library/debian:12.1-slim
+#6 ...
+
+#7 [nginx-crowdsec-dashboard internal] load metadata for docker.io/metabase/metabase:latest
+#7 DONE 0.8s
+
+#8 [nginx-crowdsec-dashboard 1/2] FROM docker.io/metabase/metabase@sha256:c79c71260275093ebd57eee9b00b7068606e78217994f39887703b02ebeb5a35
+#8 DONE 0.0s
+
+#9 [nginx-crowdsec-dashboard 2/2] RUN mkdir /data/ && wget https://crowdsec-statics-assets.s3-eu-west-1.amazonaws.com/metabase_sqlite.zip && unzip metabase_sqlite.zip -d /data/
+#9 CACHED
+
+#10 [nginx-crowdsec-dashboard] exporting to image
+#10 exporting layers done
+#10 writing image sha256:04bebeb22af4cd628544b72cc8f220b1080fe1b7346140396b47a9b434836692 done
+#10 naming to docker.io/library/nginx-crowdsec-dashboard done
+#10 DONE 0.0s
+
+#6 [nginx-stable-modsec internal] load metadata for docker.io/library/debian:12.1-slim
+#6 DONE 1.6s
+
+#11 [nginx-stable-modsec  1/21] FROM docker.io/library/debian:12.1-slim@sha256:24c92a69df28b21676d721fe18c0bf64138bfc69b486746ad935b49cc31b0b91
+#11 DONE 0.0s
+
+#12 [nginx-stable-modsec 18/21] RUN sed -i '1i\load_module modules/ngx_http_modsecurity_module.so;' /etc/nginx/nginx.conf
+#12 CACHED
+
+#13 [nginx-stable-modsec 15/21] RUN echo "# Include custom OWASP rules \tInclude /etc/nginx/crs/owasp-crs.conf" >> /etc/nginx/modsecurity.conf
+#13 CACHED
+
+#14 [nginx-stable-modsec 13/21] RUN cp /ModSecurity/unicode.mapping /etc/nginx/
+#14 CACHED
+
+#15 [nginx-stable-modsec  2/21] RUN apt-get update     && apt-get install -y     build-essential     libpcre3 libpcre3-dev     libssl-dev     git     zlib1g-dev     wget     automake     autoconf     libtool
+#15 CACHED
+
+#16 [nginx-stable-modsec  5/21] RUN git submodule init && git submodule update
+#16 CACHED
+
+#17 [nginx-stable-modsec  6/21] RUN ./build.sh && ./configure && make && make install
+#17 CACHED
+
+#18 [nginx-stable-modsec 17/21] RUN cp /etc/nginx/crs/crs-setup.conf.example /etc/nginx/crs/crs-setup.conf
+#18 CACHED
+
+#19 [nginx-stable-modsec  8/21] RUN wget https://nginx.org/download/nginx-1.24.0.tar.gz
+#19 CACHED
+
+#20 [nginx-stable-modsec 16/21] RUN git clone --depth 1 -b v3.3/master --single-branch https://github.com/coreruleset/coreruleset /etc/nginx/crs
+#20 CACHED
+
+#21 [nginx-stable-modsec 14/21] RUN sed -i 's/SecRuleEngine DetectionOnly/SecRuleEngine On/' /etc/nginx/modsecurity.conf
+#21 CACHED
+
+#22 [nginx-stable-modsec  9/21] RUN tar zxvf nginx-1.24.0.tar.gz
+#22 CACHED
+
+#23 [nginx-stable-modsec 12/21] RUN cp /ModSecurity/modsecurity.conf-recommended /etc/nginx/modsecurity.conf
+#23 CACHED
+
+#24 [nginx-stable-modsec  4/21] WORKDIR /ModSecurity
+#24 CACHED
+
+#25 [nginx-stable-modsec 11/21] RUN ./configure     --prefix=/etc/nginx     --sbin-path=/usr/sbin/nginx     --conf-path=/etc/nginx/nginx.conf     --http-log-path=/var/log/nginx/access.log     --error-log-path=/var/log/nginx/error.log     --add-dynamic-module=/ModSecurity-nginx     --with-http_ssl_module     --with-stream     --with-pcre     && make     && make install     && make modules
+#25 CACHED
+
+#26 [nginx-stable-modsec  7/21] RUN git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
+#26 CACHED
+
+#27 [nginx-stable-modsec 10/21] WORKDIR /nginx-1.24.0
+#27 CACHED
+
+#28 [nginx-stable-modsec  3/21] RUN git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity
+#28 CACHED
+
+#29 [nginx-stable-modsec 19/21] RUN sed -i '/http {/a \\tmodsecurity on;\n\tmodsecurity_rules_file /etc/nginx/modsecurity.conf;' /etc/nginx/nginx.conf
+#29 CACHED
+
+#30 [nginx-stable-modsec 20/21] RUN touch /var/log/nginx/error.log
+#30 CACHED
+
+#31 [nginx-stable-modsec] exporting to image
+#31 exporting layers done
+#31 writing image sha256:496dfb282e89dd6f17d5f0da8b691cd5d8353c0f2024fab193725841525f46f4 done
+#31 naming to docker.io/library/nginx-stable-modsec done
+#31 DONE 0.0s
+Attaching to nginx-crowdsec-crowdsec-1, nginx-crowdsec-dashboard-1, nginx-crowdsec-nginx-exporter-1, nginx-crowdsec-reverse-proxy-1
+nginx-crowdsec-nginx-exporter-1  | NGINX Prometheus Exporter version=0.11.0 commit=e4a6810d4f0b776f7fde37fea1d84e4c7284b72a date=2022-09-07T21:09:51Z, dirty=false, arch=linux/amd64, go=go1.19
+nginx-crowdsec-crowdsec-1        | Local agent already registered
+nginx-crowdsec-crowdsec-1        | Check if lapi needs to register an additional agent
+nginx-crowdsec-nginx-exporter-1 exited with code 1
+nginx-crowdsec-crowdsec-1        | sqlite database permissions updated
+nginx-crowdsec-crowdsec-1        | Running: cscli  collections upgrade "crowdsecurity/linux"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers upgrade "crowdsecurity/whitelists"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers install "crowdsecurity/docker-logs"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers install "crowdsecurity/cri-logs"
+nginx-crowdsec-crowdsec-1        | Running: cscli  collections install "crowdsecurity/nginx"
+nginx-crowdsec-dashboard-1       | Warning: environ value jdk-11.0.20.1+1 for key :java-version has been overwritten with 11.0.20.1
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:47:52,109 INFO metabase.util :: Maximum memory available to JVM: 3.8 GB
+nginx-crowdsec-crowdsec-1 exited with code 0
+nginx-crowdsec-crowdsec-1        | Local agent already registered
+nginx-crowdsec-crowdsec-1        | Check if lapi needs to register an additional agent
+nginx-crowdsec-crowdsec-1        | sqlite database permissions updated
+nginx-crowdsec-crowdsec-1        | Running: cscli  collections upgrade "crowdsecurity/linux"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers upgrade "crowdsecurity/whitelists"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers install "crowdsecurity/docker-logs"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers install "crowdsecurity/cri-logs"
+nginx-crowdsec-crowdsec-1        | Running: cscli  collections install "crowdsecurity/nginx"
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:47:54,098 WARN db.env :: [31mWARNING: Using Metabase with an H2 application database is not recommended for production deployments. For production deployments, we highly recommend using Postgres, MySQL, or MariaDB instead. If you decide to continue to use H2, please be sure to back up the database file regularly. For more information, see https://metabase.com/docs/latest/operations-guide/migrating-from-h2.html[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:47:54,247 INFO util.encryption :: Saved credentials encryption is DISABLED for this Metabase instance. 🔓 
+nginx-crowdsec-dashboard-1       |  For more information, see https://metabase.com/docs/latest/operations-guide/encrypting-database-details-at-rest.html
+nginx-crowdsec-crowdsec-1 exited with code 1
+nginx-crowdsec-crowdsec-1        | Local agent already registered
+nginx-crowdsec-crowdsec-1        | Check if lapi needs to register an additional agent
+nginx-crowdsec-crowdsec-1        | sqlite database permissions updated
+nginx-crowdsec-crowdsec-1        | Running: cscli  collections upgrade "crowdsecurity/linux"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers upgrade "crowdsecurity/whitelists"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers install "crowdsecurity/docker-logs"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers install "crowdsecurity/cri-logs"
+nginx-crowdsec-crowdsec-1        | Running: cscli  collections install "crowdsecurity/nginx"
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:00,194 INFO driver.impl :: [34mRegistered abstract driver :sql[0m  🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:00,205 INFO driver.impl :: [34mRegistered abstract driver :sql-jdbc[0m (parents: [:sql]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:00,210 INFO metabase.util :: [32mLoad driver :sql-jdbc took 88.8 ms[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:00,211 INFO driver.impl :: [34mRegistered driver :h2[0m (parents: [:sql-jdbc]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:00,253 INFO driver.impl :: [34mRegistered driver :mysql[0m (parents: [:sql-jdbc]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:00,288 INFO driver.impl :: [34mRegistered driver :postgres[0m (parents: [:sql-jdbc]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,084 INFO metabase.core :: 
+nginx-crowdsec-dashboard-1       | Metabase v0.47.3 (4202328 ?) 
+nginx-crowdsec-dashboard-1       | 
+nginx-crowdsec-dashboard-1       | Copyright © 2023 Metabase, Inc. 
+nginx-crowdsec-dashboard-1       | 
+nginx-crowdsec-dashboard-1       | Metabase Enterprise Edition extensions are NOT PRESENT.
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,095 INFO metabase.core :: Starting Metabase in STANDALONE mode
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,160 INFO metabase.server :: Launching Embedded Jetty Webserver with config: 
+nginx-crowdsec-dashboard-1       |  {:port 3000, :host "0.0.0.0"}
+nginx-crowdsec-dashboard-1       | 
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,204 INFO metabase.core :: Starting Metabase version v0.47.3 (4202328 ?) ...
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,222 INFO metabase.core :: System info:
+nginx-crowdsec-dashboard-1       |  {"file.encoding" "UTF-8",
+nginx-crowdsec-dashboard-1       |  "java.runtime.name" "OpenJDK Runtime Environment",
+nginx-crowdsec-dashboard-1       |  "java.runtime.version" "11.0.20.1+1",
+nginx-crowdsec-dashboard-1       |  "java.vendor" "Eclipse Adoptium",
+nginx-crowdsec-dashboard-1       |  "java.vendor.url" "https://adoptium.net/",
+nginx-crowdsec-dashboard-1       |  "java.version" "11.0.20.1",
+nginx-crowdsec-dashboard-1       |  "java.vm.name" "OpenJDK 64-Bit Server VM",
+nginx-crowdsec-dashboard-1       |  "java.vm.version" "11.0.20.1+1",
+nginx-crowdsec-dashboard-1       |  "os.name" "Linux",
+nginx-crowdsec-dashboard-1       |  "os.version" "6.5.4-76060504-generic",
+nginx-crowdsec-dashboard-1       |  "user.language" "en",
+nginx-crowdsec-dashboard-1       |  "user.timezone" "GMT"}
+nginx-crowdsec-dashboard-1       | 
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,223 INFO metabase.plugins :: Loading plugins in /plugins...
+nginx-crowdsec-crowdsec-1 exited with code 1
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,527 DEBUG plugins.lazy-loaded-driver :: [35mRegistering lazy loading driver :athena...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,528 INFO driver.impl :: [34mRegistered driver :athena[0m (parents: [:sql-jdbc]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,552 DEBUG plugins.lazy-loaded-driver :: [35mRegistering lazy loading driver :bigquery-cloud-sdk...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,553 INFO driver.impl :: [34mRegistered driver :bigquery-cloud-sdk[0m (parents: [:sql]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,557 DEBUG plugins.lazy-loaded-driver :: [35mRegistering lazy loading driver :sqlite...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,558 INFO driver.impl :: [34mRegistered driver :sqlite[0m (parents: [:sql-jdbc]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,564 INFO plugins.dependencies :: [31mMetabase cannot initialize plugin Metabase Vertica Driver due to required dependencies.[0m Metabase requires the Vertica JDBC driver in order to connect to Vertica databases, but we can't ship it as part of Metabase due to licensing restrictions. See https://metabase.com/docs/latest/administration-guide/databases/vertica.html for more details.
+nginx-crowdsec-dashboard-1       | 
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,567 INFO plugins.dependencies :: Metabase Vertica Driver dependency {:class com.vertica.jdbc.Driver} satisfied? false
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,567 INFO plugins.dependencies :: [33mPlugins with unsatisfied deps: ["Metabase Vertica Driver"][0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,578 DEBUG plugins.lazy-loaded-driver :: [35mRegistering lazy loading driver :hive-like...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,579 INFO driver.impl :: [34mRegistered abstract driver :hive-like[0m (parents: [:sql-jdbc]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,580 DEBUG plugins.lazy-loaded-driver :: [35mRegistering lazy loading driver :sparksql...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,582 INFO driver.impl :: [34mRegistered driver :sparksql[0m (parents: [:hive-like]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,589 DEBUG plugins.lazy-loaded-driver :: [35mRegistering lazy loading driver :redshift...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,593 INFO driver.impl :: [34mRegistered driver :redshift[0m (parents: [:postgres]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,609 DEBUG plugins.lazy-loaded-driver :: [35mRegistering lazy loading driver :mongo...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,609 INFO driver.impl :: [34mRegistered driver :mongo[0m  🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,627 DEBUG plugins.lazy-loaded-driver :: [35mRegistering lazy loading driver :presto-jdbc...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,628 INFO driver.impl :: [34mRegistered driver :presto-jdbc[0m (parents: [:sql-jdbc]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,633 DEBUG plugins.lazy-loaded-driver :: [35mRegistering lazy loading driver :druid...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,634 INFO driver.impl :: [34mRegistered driver :druid[0m  🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,662 DEBUG plugins.lazy-loaded-driver :: [35mRegistering lazy loading driver :snowflake...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,663 INFO driver.impl :: [34mRegistered driver :snowflake[0m (parents: [:sql-jdbc]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,670 INFO plugins.dependencies :: [31mMetabase cannot initialize plugin Metabase Oracle Driver due to required dependencies.[0m Metabase requires the Oracle JDBC driver in order to connect to Oracle databases, but we can't ship it as part of Metabase due to licensing restrictions. See https://metabase.com/docs/latest/administration-guide/databases/oracle.html for more details.
+nginx-crowdsec-dashboard-1       | 
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,671 INFO plugins.dependencies :: Metabase Oracle Driver dependency {:class oracle.jdbc.OracleDriver} satisfied? false
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,671 INFO plugins.dependencies :: [33mPlugins with unsatisfied deps: ["Metabase Oracle Driver" "Metabase Vertica Driver"][0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,675 DEBUG plugins.lazy-loaded-driver :: [35mRegistering lazy loading driver :googleanalytics...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,676 INFO driver.impl :: [34mRegistered driver :googleanalytics[0m  🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,681 DEBUG plugins.lazy-loaded-driver :: [35mRegistering lazy loading driver :sqlserver...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,682 INFO driver.impl :: [34mRegistered driver :sqlserver[0m (parents: [:sql-jdbc]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,683 INFO metabase.core :: Setting up and migrating Metabase DB. Please sit tight, this may take a minute...
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:02,687 INFO db.setup :: [36mVerifying h2 Database Connection ...[0m
+nginx-crowdsec-crowdsec-1        | Local agent already registered
+nginx-crowdsec-crowdsec-1        | Check if lapi needs to register an additional agent
+nginx-crowdsec-crowdsec-1        | sqlite database permissions updated
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:03,307 INFO db.setup :: Successfully verified H2 2.1.214 (2022-06-13) application database connection. ✅
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:03,308 INFO db.setup :: Running Database Migrations...
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:03,310 INFO db.setup :: Setting up Liquibase...
+nginx-crowdsec-crowdsec-1        | Running: cscli  collections upgrade "crowdsecurity/linux"
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:03,584 INFO db.setup :: Liquibase is ready.
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:03,584 INFO db.liquibase :: Checking if Database has unrun migrations...
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers upgrade "crowdsecurity/whitelists"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers install "crowdsecurity/docker-logs"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers install "crowdsecurity/cri-logs"
+nginx-crowdsec-crowdsec-1        | Running: cscli  collections install "crowdsecurity/nginx"
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:04,913 INFO db.setup :: Database Migrations Current ...  ✅
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:04,927 INFO db.data-migrations :: Running all necessary data migrations, this may take a minute.
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,483 INFO db.data-migrations :: Finished running data migrations.
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,483 INFO metabase.util :: [32mDatabase setup took 2.8 s[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,551 INFO metabase.events :: Starting events listener: [34m:metabase.events.activity-feed/ActivityFeed[0m 👂
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,556 INFO metabase.events :: Starting events listener: [34m:metabase.events.last-login/LastLogin[0m 👂
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,557 INFO metabase.events :: Starting events listener: [34m:metabase.events.persisted-info/PersistedInfo[0m 👂
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,557 INFO metabase.events :: Starting events listener: [34m:metabase.events.sync-database/Sync[0m 👂
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,558 INFO metabase.events :: Starting events listener: [34m:metabase.events.driver-notifications/DriverNotifications[0m 👂
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,559 INFO metabase.events :: Starting events listener: [34m:metabase.events.revision/Revisions[0m 👂
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,560 INFO metabase.events :: Starting events listener: [34m:metabase.events.view-log/ViewLog[0m 👂
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,632 INFO impl.StdSchedulerFactory :: Using default implementation for ThreadExecutor
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,646 INFO core.SchedulerSignalerImpl :: Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,647 INFO core.QuartzScheduler :: Quartz Scheduler v.2.3.2 created.
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,648 INFO jdbcjobstore.JobStoreTX :: Using db table-based data access locking (synchronization).
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,650 INFO jdbcjobstore.JobStoreTX :: JobStoreTX initialized.
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,651 INFO core.QuartzScheduler :: Scheduler meta-data: Quartz Scheduler (v2.3.2) 'MetabaseScheduler' with instanceId 'ac58a4cb7f301696855685634'
+nginx-crowdsec-dashboard-1       |   Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+nginx-crowdsec-dashboard-1       |   NOT STARTED.
+nginx-crowdsec-dashboard-1       |   Currently in standby mode.
+nginx-crowdsec-dashboard-1       |   Number of jobs executed: 0
+nginx-crowdsec-dashboard-1       |   Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+nginx-crowdsec-dashboard-1       |   Using job-store 'org.quartz.impl.jdbcjobstore.JobStoreTX' - which supports persistence. and is clustered.
+nginx-crowdsec-dashboard-1       | 
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,652 INFO impl.StdSchedulerFactory :: Quartz scheduler 'MetabaseScheduler' initialized from default resource file in Quartz package: 'quartz.properties'
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,652 INFO impl.StdSchedulerFactory :: Quartz scheduler version: 2.3.2
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,771 INFO core.QuartzScheduler :: Scheduler MetabaseScheduler_$_ac58a4cb7f301696855685634 paused.
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,772 INFO metabase.task :: Task scheduler initialized into standby mode.
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,773 INFO metabase.task :: Initializing task [32mSyncDatabases[0m 📆
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,818 INFO task.sync-databases :: Updated default schedules for 0 databases
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,818 INFO metabase.task :: Initializing task [32mPersistRefresh[0m 📆
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,828 INFO driver.impl :: [33mInitializing driver :sql...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,828 INFO driver.impl :: [33mInitializing driver :sql-jdbc...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,829 INFO driver.impl :: [33mInitializing driver :sqlite...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,830 INFO plugins.classloader :: Added URL file:/plugins/sqlite.metabase-driver.jar to classpath
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,831 DEBUG plugins.init-steps :: [34mLoading plugin namespace metabase.driver.sqlite...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,842 INFO driver.impl :: [34mRegistered driver :sqlite[0m (parents: [:sql-jdbc]) 🚚
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,872 DEBUG plugins.jdbc-proxy :: [34mRegistering JDBC proxy driver for org.sqlite.JDBC...[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,875 INFO metabase.util :: [32m[35mLoad lazy loading driver :sqlite[0m took 44.7 ms[0m
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,909 INFO metabase.task :: Initializing task [32mCheckForNewVersions[0m 📆
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,924 INFO metabase.task :: Initializing task [32mPersistPrune[0m 📆
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,927 INFO metabase.task :: Initializing task [32mSendAnonymousUsageStats[0m 📆
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,935 INFO metabase.task :: Initializing task [32mModelIndexValues[0m 📆
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,937 INFO metabase.task :: Initializing task [32mRefreshSlackChannelsAndUsers[0m 📆
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,948 INFO metabase.task :: Initializing task [32mSendPulses[0m 📆
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,955 INFO metabase.task :: Initializing task [32mSendFollowUpEmails[0m 📆
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,963 INFO metabase.task :: Initializing task [32mTaskHistoryCleanup[0m 📆
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,970 INFO metabase.task :: Initializing task [32mTruncateAuditLog[0m 📆
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,979 INFO jdbcjobstore.JobStoreTX :: ClusterManager: detected 1 failed or restarted instances.
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,980 INFO jdbcjobstore.JobStoreTX :: ClusterManager: Scanning for instance "ac58a4cb7f301696855605520"'s failed in-progress jobs.
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,981 INFO core.QuartzScheduler :: Scheduler MetabaseScheduler_$_ac58a4cb7f301696855685634 started.
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,982 INFO metabase.task :: Task scheduler started
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:05,983 INFO metabase.core :: Metabase Initialization COMPLETE in 18.7 s
+nginx-crowdsec-dashboard-1       | 2023-10-09 12:48:06,006 INFO task.refresh-slack-channel-user-cache :: Slack is not configured, not refreshing slack user/channel cache.
+nginx-crowdsec-crowdsec-1 exited with code 1
+nginx-crowdsec-crowdsec-1        | Local agent already registered
+nginx-crowdsec-crowdsec-1        | Check if lapi needs to register an additional agent
+nginx-crowdsec-crowdsec-1        | sqlite database permissions updated
+nginx-crowdsec-crowdsec-1        | Running: cscli  collections upgrade "crowdsecurity/linux"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers upgrade "crowdsecurity/whitelists"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers install "crowdsecurity/docker-logs"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers install "crowdsecurity/cri-logs"
+nginx-crowdsec-crowdsec-1        | Running: cscli  collections install "crowdsecurity/nginx"
+nginx-crowdsec-crowdsec-1 exited with code 1
+nginx-crowdsec-crowdsec-1        | Local agent already registered
+nginx-crowdsec-crowdsec-1        | Check if lapi needs to register an additional agent
+nginx-crowdsec-crowdsec-1        | sqlite database permissions updated
+nginx-crowdsec-crowdsec-1        | Running: cscli  collections upgrade "crowdsecurity/linux"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers upgrade "crowdsecurity/whitelists"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers install "crowdsecurity/docker-logs"
+nginx-crowdsec-crowdsec-1        | Running: cscli  parsers install "crowdsecurity/cri-logs"
+nginx-crowdsec-crowdsec-1        | Running: cscli  collections install "crowdsecurity/nginx"
+nginx-crowdsec-crowdsec-1 exited with code 1
